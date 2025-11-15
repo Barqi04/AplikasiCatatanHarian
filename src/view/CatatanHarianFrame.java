@@ -643,9 +643,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnExport)
-                            .addComponent(btnImport))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(btnImport)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(11, 11, 11)
@@ -661,8 +660,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                                     .addComponent(lblTampilJudul)
                                     .addComponent(lblTampilTanggal))))
                         .addGap(4, 4, 4)
-                        .addComponent(jScrollPane4)))
-                .addContainerGap())
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
