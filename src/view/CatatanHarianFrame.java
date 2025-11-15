@@ -247,39 +247,134 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
     private void importCSV() {
 
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Import Data Catatan");
+    showCSVGuide(); // Tampilkan panduan format CSV
 
-        int result = chooser.showOpenDialog(this);
-        if (result != JFileChooser.APPROVE_OPTION) return;
+    int confirm = JOptionPane.showConfirmDialog(
+        this,
+        "Apakah Anda yakin file CSV yang dipilih sudah sesuai dengan format?",
+        "Konfirmasi Impor CSV",
+        JOptionPane.YES_NO_OPTION
+    );
 
-        File file = chooser.getSelectedFile();
+    if (confirm != JOptionPane.YES_OPTION) return;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setDialogTitle("Import Data Catatan");
 
-            reader.readLine(); // skip header
-            String line;
+    int result = chooser.showOpenDialog(this);
+    if (result != JFileChooser.APPROVE_OPTION) return;
 
-            while ((line = reader.readLine()) != null) {
+    File file = chooser.getSelectedFile();
 
-                String[] parts = line.split(",");
-                if (parts.length < 5) continue;
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
-                String judul = parts[1];
-                String isi = parts[2];
-                String tanggal = parts[3];
-                String status = parts[4];
+        String header = reader.readLine(); // baca header
 
-                controller.addNote(judul, isi, tanggal, status);
+        if (!validateCSVHeader(header)) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Header CSV tidak valid!\nHeader wajib: ID,Judul,Isi,Tanggal,Status",
+                "Kesalahan CSV",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        String line;
+        int rowCount = 0;
+        int errorCount = 0;
+
+        StringBuilder errorLog = new StringBuilder("Kesalahan pada baris:\n");
+
+        while ((line = reader.readLine()) != null) {
+            rowCount++;
+
+            String[] parts = line.split(",");
+
+            if (parts.length < 5) {
+                errorCount++;
+                errorLog.append("Baris ").append(rowCount + 1)
+                        .append(": Jumlah kolom tidak sesuai.\n");
+                continue;
             }
 
-            loadNotes();
-            JOptionPane.showMessageDialog(this, "Import selesai!");
+            String judul = parts[1].trim();
+            String isi = parts[2].trim();
+            String tanggal = parts[3].trim();
+            String status = parts[4].trim();
+
+            // Validasi wajib isi
+            if (judul.isEmpty() || isi.isEmpty()) {
+                errorCount++;
+                errorLog.append("Baris ").append(rowCount + 1)
+                        .append(": Judul atau Isi kosong.\n");
+                continue;
+            }
+
+            // Validasi status
+            if (!status.equalsIgnoreCase("Selesai") &&
+                !status.equalsIgnoreCase("Belum Selesai")) {
+
+                errorCount++;
+                errorLog.append("Baris ").append(rowCount + 1)
+                        .append(": Status tidak valid. Gunakan 'Selesai' atau 'Belum Selesai'.\n");
+                continue;
+            }
+
+            try {
+                controller.addNote(judul, isi, tanggal, status);
+            } catch (SQLException ex) {
+                errorCount++;
+                errorLog.append("Baris ").append(rowCount + 1)
+                        .append(": Gagal menyimpan ke database - ")
+                        .append(ex.getMessage()).append("\n");
+            }
+        }
+
+        loadNotes();
+
+        if (errorCount > 0) {
+            JOptionPane.showMessageDialog(
+                this,
+                errorLog.toString(),
+                "Beberapa Data Tidak Masuk",
+                JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(this, "Semua data berhasil diimpor!");
+        }
 
         } catch (Exception e) {
-            showError(e.getMessage());
+            showError("Gagal membaca file: " + e.getMessage());
         }
     }
+    
+    private void showCSVGuide() {
+    String message =
+        "Format CSV untuk impor catatan:\n" +
+        "- Header wajib: ID,Judul,Isi,Tanggal,Status\n" +
+        "- ID boleh kosong (diabaikan)\n" +
+        "- Judul dan Isi wajib diisi\n" +
+        "- Status hanya boleh: Selesai / Belum Selesai\n\n" +
+        "Contoh:\n" +
+        "1,Mengerjakan PBO,Hari ini saya belajar PBO,2025-11-16,Selesai\n" +
+        "2,Olahraga,Pergi lari pagi,2025-11-15,Belum Selesai\n";
+
+        JOptionPane.showMessageDialog(
+            this,
+            message,
+            "Panduan CSV",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+    
+    private boolean validateCSVHeader(String header) {
+        return header != null &&
+            header.trim().equalsIgnoreCase("ID,Judul,Isi,Tanggal,Status");
+    }
+
+
+
 
 
 
@@ -320,6 +415,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
         txtAreaPreview = new javax.swing.JTextArea();
         lblJudulPreview = new javax.swing.JLabel();
         lblTanggalPreview = new javax.swing.JLabel();
+        lblTampilJudul = new javax.swing.JLabel();
+        lblTampilTanggal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -466,18 +563,20 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                                 .addComponent(dateChooserTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(174, 174, 174)
-                            .addComponent(lblPreview)
-                            .addGap(187, 187, 187))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(lblJudulPreview)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTanggalPreview)
-                            .addGap(38, 38, 38)))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblJudulPreview)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTampilJudul)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTanggalPreview)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTampilTanggal))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(lblPreview))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,7 +623,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblJudulPreview)
-                                    .addComponent(lblTanggalPreview))))
+                                    .addComponent(lblTanggalPreview)
+                                    .addComponent(lblTampilJudul)
+                                    .addComponent(lblTampilTanggal))))
                         .addGap(4, 4, 4)
                         .addComponent(jScrollPane4)))
                 .addContainerGap())
@@ -568,8 +669,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             String tanggal = model.getValueAt(row, 3).toString();
 
             // Set ke preview
-            lblJudulPreview.setText(judul);
-            lblTanggalPreview.setText(tanggal);
+            lblTampilJudul.setText(judul);
+            lblTampilTanggal.setText(tanggal);
             txtAreaPreview.setText(isi);
         }
     }//GEN-LAST:event_tableNotesMouseClicked
@@ -636,6 +737,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblJudulPreview;
     private javax.swing.JLabel lblPreview;
     private javax.swing.JLabel lblStatis;
+    private javax.swing.JLabel lblTampilJudul;
+    private javax.swing.JLabel lblTampilTanggal;
     private javax.swing.JLabel lblTanggal;
     private javax.swing.JLabel lblTanggalPreview;
     private javax.swing.JRadioButton radioBelumSelesai;

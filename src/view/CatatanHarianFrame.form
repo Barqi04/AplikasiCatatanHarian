@@ -107,22 +107,23 @@
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="174" max="-2" attributes="0"/>
-                              <Component id="lblPreview" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblJudulPreview" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblTanggalPreview" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="lblJudulPreview" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblTampilJudul" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="lblTanggalPreview" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblTampilTanggal" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="174" max="-2" attributes="0"/>
+                          <Component id="lblPreview" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane4" alignment="0" min="-2" pref="426" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -181,6 +182,8 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="lblJudulPreview" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTanggalPreview" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTampilJudul" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTampilTanggal" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -360,6 +363,10 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Tanggal :"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTampilJudul">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTampilTanggal">
         </Component>
       </SubComponents>
     </Container>
