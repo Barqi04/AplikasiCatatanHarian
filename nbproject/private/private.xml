@@ -4,11 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/view/CatatanHarianFrame.java</file>
+            <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/database/DatabaseConnection.java</file>
             <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/database/DatabaseSetup.java</file>
             <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/controller/CatatanController.java</file>
             <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/model/Catatan.java</file>
             <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/model/CatatanDAO.java</file>
-            <file>file:/D:/.UNISKA2023/Semester%205/Pemrograman%20Berbasi%20Objek%202/Project/AplikasiCatatanHarian/src/database/DatabaseConnection.java</file>
         </group>
     </open-files>
 </project-private>
