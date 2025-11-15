@@ -81,11 +81,11 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="DateChooserTanggal" alignment="0" max="32767" attributes="0"/>
+                              <Component id="dateChooserTanggal" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="RadioBelumSelesai" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioBelumSelesai" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="RadioSelesai" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioSelesai" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane1" alignment="0" pref="322" max="32767" attributes="0"/>
                               <Component id="txtJudulCatatan" max="32767" attributes="0"/>
@@ -94,8 +94,14 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPane2" max="32767" attributes="0"/>
-                      <Component id="txtSearch" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="txtSearch" min="-2" pref="201" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnImport" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnExport" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace pref="18" max="32767" attributes="0"/>
               </Group>
@@ -109,6 +115,8 @@
                       <Component id="lblJudulCatatan" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtJudulCatatan" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtSearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnExport" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnImport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -120,14 +128,14 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblTanggal" min="-2" max="-2" attributes="0"/>
-                              <Component id="DateChooserTanggal" min="-2" max="-2" attributes="0"/>
+                              <Component id="dateChooserTanggal" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblStatis" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="RadioBelumSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="RadioSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioBelumSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -140,7 +148,7 @@
                       </Group>
                       <Component id="jScrollPane2" min="-2" pref="215" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="22" max="32767" attributes="0"/>
+                  <EmptySpace pref="21" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -178,19 +186,19 @@
             <Property name="text" type="java.lang.String" value="Tanggal"/>
           </Properties>
         </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="DateChooserTanggal">
+        <Component class="com.toedter.calendar.JDateChooser" name="dateChooserTanggal">
         </Component>
         <Component class="javax.swing.JLabel" name="lblStatis">
           <Properties>
             <Property name="text" type="java.lang.String" value="Status"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="RadioBelumSelesai">
+        <Component class="javax.swing.JRadioButton" name="radioBelumSelesai">
           <Properties>
             <Property name="text" type="java.lang.String" value="Belum Selesai"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="RadioSelesai">
+        <Component class="javax.swing.JRadioButton" name="radioSelesai">
           <Properties>
             <Property name="text" type="java.lang.String" value="Selesai"/>
           </Properties>
@@ -222,7 +230,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="TabelNotes">
+            <Component class="javax.swing.JTable" name="tableNotes">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
@@ -239,6 +247,16 @@
         <Component class="javax.swing.JTextField" name="txtSearch">
           <Properties>
             <Property name="text" type="java.lang.String" value="Search..."/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnExport">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Export"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnImport">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Import"/>
           </Properties>
         </Component>
       </SubComponents>

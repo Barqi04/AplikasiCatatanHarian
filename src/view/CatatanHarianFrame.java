@@ -4,18 +4,79 @@
  */
 package view;
 
+import controller.CatatanController;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.Catatan;
+
+import java.sql.SQLException; 
+import java.util.logging.Level; 
+import java.util.logging.Logger; 
+import javax.swing.JOptionPane;
+
+
+
 /**
  *
  * @author USER
  */
 public class CatatanHarianFrame extends javax.swing.JFrame {
 
+    private DefaultTableModel model; 
+    private CatatanController controller;
+
     /**
      * Creates new form CatatanHarianFrame
      */
     public CatatanHarianFrame() {
         initComponents();
+        controller = new CatatanController();
+
+        model = new DefaultTableModel(
+            new String[]{"ID", "Judul", "Isi", "Tanggal", "Status"}, 0
+        );
+
+        tableNotes.setModel(model);
+
+        loadNotes();
     }
+    
+    private void loadNotes() {
+        try {
+            model.setRowCount(0); // bersihkan tabel
+
+            List<Catatan> notes = controller.getAllNotes();
+
+            for (Catatan note : notes) {
+                model.addRow(new Object[]{
+                    note.getId(),
+                    note.getJudul(),
+                    note.getIsi(),
+                    note.getTanggal(),
+                    note.getStatus()
+                });
+            }
+
+        } catch (SQLException e) {
+            showError(e.getMessage());
+        }
+    }
+
+    
+    private void clearInput() {
+        txtJudulCatatan.setText("");
+        AreaIsiCatatan.setText("");
+        dateChooserTanggal.setDate(null);
+        radioBelumSelesai.setSelected(true);
+        tableNotes.clearSelection();
+    }
+    
+    private void showError (String message){
+        JOptionPane.showMessageDialog(this, message, "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,17 +96,19 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         AreaIsiCatatan = new javax.swing.JTextArea();
         lblTanggal = new javax.swing.JLabel();
-        DateChooserTanggal = new com.toedter.calendar.JDateChooser();
+        dateChooserTanggal = new com.toedter.calendar.JDateChooser();
         lblStatis = new javax.swing.JLabel();
-        RadioBelumSelesai = new javax.swing.JRadioButton();
-        RadioSelesai = new javax.swing.JRadioButton();
+        radioBelumSelesai = new javax.swing.JRadioButton();
+        radioSelesai = new javax.swing.JRadioButton();
         btnTambah = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        TabelNotes = new javax.swing.JTable();
+        tableNotes = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
+        btnExport = new javax.swing.JButton();
+        btnImport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,9 +133,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
         lblStatis.setText("Status");
 
-        RadioBelumSelesai.setText("Belum Selesai");
+        radioBelumSelesai.setText("Belum Selesai");
 
-        RadioSelesai.setText("Selesai");
+        radioSelesai.setText("Selesai");
 
         btnTambah.setText("Tambah");
 
@@ -82,7 +145,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
         btnClear.setText("Clear");
 
-        TabelNotes.setModel(new javax.swing.table.DefaultTableModel(
+        tableNotes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -93,9 +156,13 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(TabelNotes);
+        jScrollPane2.setViewportView(tableNotes);
 
         txtSearch.setText("Search...");
+
+        btnExport.setText("Export");
+
+        btnImport.setText("Import");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -120,17 +187,22 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                             .addComponent(lblStatis))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(DateChooserTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateChooserTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(RadioBelumSelesai)
+                                .addComponent(radioBelumSelesai)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(RadioSelesai))
+                                .addComponent(radioSelesai))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                             .addComponent(txtJudulCatatan))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(txtSearch))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImport)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExport)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -140,7 +212,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblJudulCatatan)
                     .addComponent(txtJudulCatatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExport)
+                    .addComponent(btnImport))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -150,13 +224,13 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTanggal)
-                            .addComponent(DateChooserTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dateChooserTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(22, 22, 22)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblStatis)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(RadioBelumSelesai)
-                                .addComponent(RadioSelesai)))
+                                .addComponent(radioBelumSelesai)
+                                .addComponent(radioSelesai)))
                         .addGap(14, 14, 14)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnTambah)
@@ -164,7 +238,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                             .addComponent(btnHapus)
                             .addComponent(btnClear)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -209,14 +283,13 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaIsiCatatan;
-    private com.toedter.calendar.JDateChooser DateChooserTanggal;
-    private javax.swing.JRadioButton RadioBelumSelesai;
-    private javax.swing.JRadioButton RadioSelesai;
-    private javax.swing.JTable TabelNotes;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnImport;
     private javax.swing.JButton btnTambah;
+    private com.toedter.calendar.JDateChooser dateChooserTanggal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -226,6 +299,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblJudulCatatan;
     private javax.swing.JLabel lblStatis;
     private javax.swing.JLabel lblTanggal;
+    private javax.swing.JRadioButton radioBelumSelesai;
+    private javax.swing.JRadioButton radioSelesai;
+    private javax.swing.JTable tableNotes;
     private javax.swing.JTextField txtJudulCatatan;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
