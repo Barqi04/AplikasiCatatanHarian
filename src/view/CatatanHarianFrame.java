@@ -420,33 +420,46 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(100, 32));
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 35));
+        jPanel1.setBackground(new java.awt.Color(16, 24, 60));
+        jPanel1.setMinimumSize(new java.awt.Dimension(100, 35));
+        jPanel1.setPreferredSize(new java.awt.Dimension(400, 50));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(245, 245, 245));
         jLabel1.setText("Aplikasi Catatan Harian");
         jPanel1.add(jLabel1);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
+        jPanel2.setBackground(new java.awt.Color(16, 24, 60));
+
+        lblJudulCatatan.setForeground(new java.awt.Color(245, 245, 245));
         lblJudulCatatan.setText("Judul Catatan");
 
+        lblIsiCatatan.setForeground(new java.awt.Color(245, 245, 245));
         lblIsiCatatan.setText("Isi Catatan");
 
         txtAreaIsiCatatan.setColumns(20);
         txtAreaIsiCatatan.setRows(5);
         jScrollPane1.setViewportView(txtAreaIsiCatatan);
 
+        lblTanggal.setForeground(new java.awt.Color(245, 245, 245));
         lblTanggal.setText("Tanggal");
 
+        lblStatis.setForeground(new java.awt.Color(245, 245, 245));
         lblStatis.setText("Status");
 
         buttonGroup1.add(radioBelumSelesai);
+        radioBelumSelesai.setForeground(new java.awt.Color(245, 245, 245));
         radioBelumSelesai.setText("Belum Selesai");
 
         buttonGroup1.add(radioSelesai);
+        radioSelesai.setForeground(new java.awt.Color(245, 245, 245));
         radioSelesai.setText("Selesai");
 
+        btnTambah.setBackground(new java.awt.Color(24, 158, 101));
+        btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnTambah.setForeground(new java.awt.Color(245, 245, 245));
         btnTambah.setText("Tambah");
         btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -454,6 +467,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             }
         });
 
+        btnEdit.setBackground(new java.awt.Color(241, 196, 15));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(0, 0, 0));
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -461,6 +477,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             }
         });
 
+        btnHapus.setBackground(new java.awt.Color(230, 68, 72));
+        btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHapus.setForeground(new java.awt.Color(245, 245, 245));
         btnHapus.setText("Hapus");
         btnHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -498,6 +517,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             }
         });
 
+        btnExport.setBackground(new java.awt.Color(88, 155, 250));
+        btnExport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnExport.setForeground(new java.awt.Color(245, 245, 245));
         btnExport.setText("Export");
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -505,6 +527,9 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             }
         });
 
+        btnImport.setBackground(new java.awt.Color(88, 155, 250));
+        btnImport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnImport.setForeground(new java.awt.Color(245, 245, 245));
         btnImport.setText("Import");
         btnImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -512,7 +537,8 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             }
         });
 
-        lblPreview.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblPreview.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblPreview.setForeground(new java.awt.Color(245, 245, 245));
         lblPreview.setText("PREVIEW");
 
         txtAreaPreview.setColumns(20);
@@ -520,10 +546,16 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
         jScrollPane4.setViewportView(txtAreaPreview);
 
         lblJudulPreview.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblJudulPreview.setForeground(new java.awt.Color(245, 245, 245));
         lblJudulPreview.setText("Judul :");
 
         lblTanggalPreview.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTanggalPreview.setForeground(new java.awt.Color(245, 245, 245));
         lblTanggalPreview.setText("Tanggal :");
+
+        lblTampilJudul.setForeground(new java.awt.Color(245, 245, 245));
+
+        lblTampilTanggal.setForeground(new java.awt.Color(245, 245, 245));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -563,20 +595,22 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                                 .addComponent(dateChooserTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblJudulPreview)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTampilJudul)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTanggalPreview)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTampilTanggal))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
-                        .addComponent(lblPreview))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblJudulPreview)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTampilJudul)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblTanggalPreview)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTampilTanggal))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblPreview)
+                        .addGap(185, 185, 185))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -610,7 +644,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnExport)
                             .addComponent(btnImport))
-                        .addGap(0, 3, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
