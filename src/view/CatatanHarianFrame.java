@@ -5,11 +5,13 @@
 package view;
 
 import controller.CatatanController;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Catatan;
 
 import java.sql.SQLException; 
+import java.text.SimpleDateFormat;
 import java.util.logging.Level; 
 import java.util.logging.Logger; 
 import javax.swing.JOptionPane;
@@ -61,20 +63,139 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             showError(e.getMessage());
         }
     }
-
-    
-    private void clearInput() {
-        txtJudulCatatan.setText("");
-        AreaIsiCatatan.setText("");
-        dateChooserTanggal.setDate(null);
-        radioBelumSelesai.setSelected(true);
-        tableNotes.clearSelection();
-    }
     
     private void showError (String message){
         JOptionPane.showMessageDialog(this, message, "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
+    
+    private void addNote() {
+
+        String judul = txtJudulCatatan.getText().trim();
+        String isi = txtAreaIsiCatatan.getText().trim();
+
+        if (judul.isEmpty() || isi.isEmpty() || dateChooserTanggal.getDate() == null) {
+            showError("Semua data wajib diisi!");
+            return;
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tanggal = sdf.format(dateChooserTanggal.getDate());
+
+            String status = radioBelumSelesai.isSelected() ? "Belum Selesai" : "Selesai";
+
+            controller.addNote(judul, isi, tanggal, status);
+            loadNotes();
+            clearFields();
+
+            JOptionPane.showMessageDialog(this, "Catatan berhasil ditambahkan!");
+
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
+    }
+    
+    private void editNote() {
+
+        int row = tableNotes.getSelectedRow();
+        if (row == -1) {
+            showError("Pilih catatan yang akan diedit!");
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(model.getValueAt(row, 0).toString());
+
+            String judul = txtJudulCatatan.getText().trim();
+            String isi = txtAreaIsiCatatan.getText().trim();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tanggal = sdf.format(dateChooserTanggal.getDate());
+
+            String status = radioBelumSelesai.isSelected() ? "Belum Selesai" : "Selesai";
+
+            controller.updateNote(id, judul, isi, tanggal, status);
+
+            loadNotes();
+            clearFields();
+
+            JOptionPane.showMessageDialog(this, "Catatan berhasil diperbarui!");
+
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
+    }
+    
+    private void searchNote() {
+        try {
+            String keyword = txtSearch.getText().trim();
+
+            model.setRowCount(0);
+
+            for (Catatan note : controller.searchNotes(keyword)) {
+                model.addRow(new Object[]{
+                    note.getId(),
+                    note.getJudul(),
+                    note.getIsi(),
+                    note.getTanggal(),
+                    note.getStatus()
+                });
+            }
+
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
+    }
+    
+    private void deleteNote() {
+    int row = tableNotes.getSelectedRow();
+    if (row == -1) {
+        showError("Pilih catatan yang akan dihapus!");
+        return;
+    }
+
+    try {
+        int id = Integer.parseInt(model.getValueAt(row, 0).toString());
+        controller.deleteNote(id);
+
+        loadNotes();
+        clearFields();
+
+        JOptionPane.showMessageDialog(this, "Catatan berhasil dihapus!");
+
+    } catch (Exception e) {
+        showError(e.getMessage());
+    }
+}
+    
+    private void populateFields() {
+        int row = tableNotes.getSelectedRow();
+        if (row == -1) return;
+
+        txtJudulCatatan.setText(model.getValueAt(row, 1).toString());
+        txtAreaIsiCatatan.setText(model.getValueAt(row, 2).toString());
+
+        try {
+            java.util.Date date = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(model.getValueAt(row, 3).toString());
+            dateChooserTanggal.setDate(date);
+        } catch (Exception e) {}
+
+        String status = model.getValueAt(row, 4).toString();
+        if (status.equals("Belum Selesai"))
+            radioBelumSelesai.setSelected(true);
+        else
+            radioSelesai.setSelected(true);
+    }
+    
+    private void clearFields() {
+        txtJudulCatatan.setText("");
+        txtAreaIsiCatatan.setText("");
+        dateChooserTanggal.setDate(null);
+        radioBelumSelesai.setSelected(true);
+    }
+
 
 
 
@@ -87,6 +208,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -94,7 +216,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
         txtJudulCatatan = new javax.swing.JTextField();
         lblIsiCatatan = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AreaIsiCatatan = new javax.swing.JTextArea();
+        txtAreaIsiCatatan = new javax.swing.JTextArea();
         lblTanggal = new javax.swing.JLabel();
         dateChooserTanggal = new com.toedter.calendar.JDateChooser();
         lblStatis = new javax.swing.JLabel();
@@ -103,7 +225,6 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
         btnTambah = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableNotes = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
@@ -125,25 +246,40 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
         lblIsiCatatan.setText("Isi Catatan");
 
-        AreaIsiCatatan.setColumns(20);
-        AreaIsiCatatan.setRows(5);
-        jScrollPane1.setViewportView(AreaIsiCatatan);
+        txtAreaIsiCatatan.setColumns(20);
+        txtAreaIsiCatatan.setRows(5);
+        jScrollPane1.setViewportView(txtAreaIsiCatatan);
 
         lblTanggal.setText("Tanggal");
 
         lblStatis.setText("Status");
 
+        buttonGroup1.add(radioBelumSelesai);
         radioBelumSelesai.setText("Belum Selesai");
 
+        buttonGroup1.add(radioSelesai);
         radioSelesai.setText("Selesai");
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
-
-        btnClear.setText("Clear");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         tableNotes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -156,9 +292,24 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableNotes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableNotesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableNotes);
 
         txtSearch.setText("Search...");
+        txtSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSearchFocusGained(evt);
+            }
+        });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         btnExport.setText("Export");
 
@@ -172,8 +323,6 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnHapus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEdit)
@@ -235,8 +384,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnTambah)
                             .addComponent(btnEdit)
-                            .addComponent(btnHapus)
-                            .addComponent(btnClear)))
+                            .addComponent(btnHapus)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -245,6 +393,33 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        addNote();
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        editNote();
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        deleteNote();
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        searchNote();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
+        if (txtSearch.getText().equals("Search...")) {
+            txtSearch.setText("");
+            txtSearch.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtSearchFocusGained
+
+    private void tableNotesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableNotesMouseClicked
+        populateFields();
+    }//GEN-LAST:event_tableNotesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -282,13 +457,12 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea AreaIsiCatatan;
-    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnTambah;
+    private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JDateChooser dateChooserTanggal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -302,6 +476,7 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioBelumSelesai;
     private javax.swing.JRadioButton radioSelesai;
     private javax.swing.JTable tableNotes;
+    private javax.swing.JTextArea txtAreaIsiCatatan;
     private javax.swing.JTextField txtJudulCatatan;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
