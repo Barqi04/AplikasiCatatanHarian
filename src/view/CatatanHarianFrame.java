@@ -371,12 +371,6 @@ public class CatatanHarianFrame extends javax.swing.JFrame {
             header.trim().equalsIgnoreCase("ID,Judul,Isi,Tanggal,Status");
     }
 
-
-
-
-
-
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
